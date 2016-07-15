@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+CURRENT_SCRIPT=$(basename "$0")
+read -r -d '' HELP_MESSAGE <<_HELP_
+Usage: $CURRENT_SCRIPT processname_or_pattern
+
+Finds process by name
+
+Options:
+    -h, --help          this help
+
+_HELP_
+ 
+if [ -z "$1" ] || [[ "$@" == *"-h"* ]];then
+   echo "$HELP_MESSAGE";
+   exit 1;
+fi;
+
+ps aux | grep -v grep | grep -v "$CURRENT_SCRIPT" | grep --color "$1"
+
