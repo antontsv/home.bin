@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+CURRENT_SCRIPT=$(basename "$0")
+read -r -d '' HELP_MESSAGE <<_HELP_
+Usage: $CURRENT_SCRIPT filename_or_pattern
+
+Finds specific files in the current directory and subdirectories.
+Filename pattern is required as a script argument.
+
+Options:
+    -h, --help          this help
+
+_HELP_
+ 
+if [ -z "$1" ] || [[ "$@" == *"-h"* ]];then
+   echo "$HELP_MESSAGE";
+   exit 1;
+fi;
+
+find . -name "*$1*"
+
