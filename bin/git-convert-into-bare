@@ -1,0 +1,78 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_    
+Converts given git repository into a bare repository
+
+Usage: $awesome_shell_script_name [-m|--mirror] [repository_path]
+
+If repository_path is not supplied and you are located in
+the root directory of some git repository,
+than this repository will converted
+
+Options:
+    -m, --mirror   Set up as mirror if repo has origin
+
+_HELP_
+
+mirror=0
+target=""
+while [[ $# -gt 0 ]]
+do
+    opt="$1"
+    shift
+
+    case $opt in
+        -m|--mirror)
+        mirror=1
+        ;;
+        *)
+        target="$opt"
+        ;;
+    esac
+done;
+
+if [ -z "$target" ] || [ ! -d "$target" ];then
+    target=$(pwd)
+fi;
+
+[ -d "$target/.git" ] || fatal "Cannot find .git directory in $target"
+
+temp_dir=$(mktemp -d -t git-convert-to-bare)
+
+([ $? -eq 0 ] && [ -d "$temp_dir" ]) || fatal "Cannot create temp directory"
+
+rm -rf "$temp_dir"
+
+MSG_LINE_WITH_DOTS_MIN_LEN=65
+
+msg_inline "Moving .git into temporary location..."
+mv "$target/.git" "$temp_dir"
+verbose_exit_code
+
+msg_inline "Cleanup $target..."
+rm -rf "$target"
+verbose_exit_code
+
+msg_inline "Prepare bare repo contents in $target..."
+mv "$temp_dir" "$target"
+verbose_exit_code
+
+cd "$target" || fatal "Failed to cd into $target"
+
+msg_inline "Set up core.bare git config setting..."
+git config --bool core.bare true
+verbose_exit_code
+
+if [ "$mirror" -eq 1 ];then
+    msg_inline "Set up mirror settings..."
+    git config remote.origin.fetch '+refs/*:refs/*'
+    git config --bool remote.origin.mirror true
+    verbose_exit_code
+fi;
+
+echo "Convertion is completed!";
+
+
+
+
+
