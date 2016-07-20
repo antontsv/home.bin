@@ -37,7 +37,7 @@ fi;
 
 [ -d "$target/.git" ] || fatal "Cannot find .git directory in $target"
 
-temp_dir=$(mktemp -d -t git-convert-to-bare)
+temp_dir=$(mktemp -d -t git-convert-to-bare.XXXXX)
 
 ([ $? -eq 0 ] && [ -d "$temp_dir" ]) || fatal "Cannot create temp directory"
 
