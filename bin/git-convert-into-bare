@@ -14,6 +14,8 @@ Options:
 
 _HELP_
 
+#awesome-shell ref:e3cf372be0b1
+
 mirror=0
 target=""
 while [[ $# -gt 0 ]]
@@ -31,9 +33,13 @@ do
     esac
 done;
 
-if [ -z "$target" ] || [ ! -d "$target" ];then
-    target=$(pwd)
+current_working_dir=$(pwd)
+if [ -z "$target" ] && ask_to_confirm "Do you want to convert '$current_working_dir'?";then
+    target="$current_working_dir"
 fi;
+
+[ -n "$target" ] || fatal "Please specify target repository path"
+[ -n "$target" ] && [ ! -d "$target" ] && fatal "'$target' is not a valid directory"
 
 [ -d "$target/.git" ] || fatal "Cannot find .git directory in $target"
 
