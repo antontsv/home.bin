@@ -17,5 +17,5 @@ if [ -z "$1" ] || [[ "$@" == *"-h"* ]];then
    exit 1;
 fi;
 
-ps aux | grep -v grep | grep -v "$CURRENT_SCRIPT" | grep --color "$1"
+ps aux | grep -v grep | grep -v "$CURRENT_SCRIPT" | grep -i --color "$1"
 
