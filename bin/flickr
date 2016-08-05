@@ -1,0 +1,93 @@
+#! /usr/bin/env python -B
+# -*- coding: utf-8 -*-
+
+"""Script to download Flickr user's public photos into local directory."""
+
+import os
+import sys
+import argparse
+import requests
+
+def cli_options():
+    """Parse selected options and generate help if needed."""
+    parser = argparse.ArgumentParser(description='pull flickr photos by user ID or user name')
+    parser.add_argument('-u', '--url', default='https://api.flickr.com/services/rest/', help='API URL')
+    parser.add_argument('-i', '--userid', default=os.getenv('FLICKR_USER_ID', ''), help="target user ID for photo download")
+    parser.add_argument('-n', '--name', default=os.getenv('FLICKR_USER_NAME', ''), help='target user name for photo download')
+    parser.add_argument('-k', '--apikey', default=os.getenv('FLICKR_API_KEY', ''), help='API key')
+    parser.add_argument('-v', '--verbose', default=0, action='count', help='Use one or multiple times to see more log messages')
+    return parser.parse_args()
+
+ARGS = cli_options()
+URL = ARGS.url.strip()
+USER_ID = ARGS.userid
+USER_NAME = ARGS.name
+API_KEY = ARGS.apikey
+VERBOSITY = ARGS.verbose
+PHOTO_LIMIT = 500 # set a limit of images to pull
+DIR = os.getenv('FLICKR_DOWNLOADS_DIR', os.environ['HOME']+'/Pictures/Flickr/')
+
+def info(message, verbosity=1):
+    """Print message based on verbosity level."""
+    if VERBOSITY >= verbosity:
+        print message
+
+def error(message):
+    """Print error message and terminate script."""
+    print message
+    sys.exit(1)
+
+if len(API_KEY) <= 0:
+    info('Get your API key here: https://www.flickr.com/services/api/keys/apply/')
+    error('Flickr API key is required. Use -k option or set up FLICKR_API_KEY environment variable')
+
+if len(USER_NAME) > 0:
+    USER_INFO_ENDPOINT = '%s?method=flickr.people.findByUsername&api_key=%s&username=%s&format=json&nojsoncallback=1' % (URL, API_KEY, USER_NAME)
+    userInfo = requests.get(USER_INFO_ENDPOINT, verify=False).json()
+    if 'user' in userInfo and 'id' in userInfo['user']:
+        USER_ID = userInfo['user']['id']
+        info("Will use Flick user ID %s that corresponds to '%s'" % (USER_ID, USER_NAME))
+    else:
+        error("Cannot find flickr user '%s'" % USER_NAME)
+
+
+if not os.path.exists(DIR):
+    info('Creating target directory %s', DIR)
+    os.makedirs(DIR)
+
+PUBLIC_PHOTO_INFO_ENDPOINT = '%s?method=flickr.people.getPublicPhotos&api_key=%s&user_id=%s&format=json&nojsoncallback=1&per_page=%d' % (URL, API_KEY, USER_ID, PHOTO_LIMIT)
+photos = requests.get(PUBLIC_PHOTO_INFO_ENDPOINT, verify=False).json()
+
+if int(photos['photos']['total']) > 0:
+    info('There are %s photos in Flickr account' % photos['photos']['total'])
+    if int(photos['photos']['total']) > PHOTO_LIMIT:
+        info('Only %d will be checked' % PHOTO_LIMIT)
+    newPhotos = 0
+    for photo in photos['photos']['photo']:
+        targetFile = DIR + photo['id'] + '.jpg'
+        if not os.path.isfile(targetFile):
+            PHOTO_INFO_ENDPOINT = '%s?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&secret=%s&format=json&nojsoncallback=1' % (URL, API_KEY, photo['id'], photo['secret'])
+            photoInfo = requests.get(PHOTO_INFO_ENDPOINT, verify=False).json()
+            if int(photoInfo['photo']['safety_level']) <= 1: # download only safe images according to Flickr rating
+                originalURL = "http://farm%d.staticflickr.com/%s/%s_%s_o.%s" % (
+                    photo['farm'], photo['server'], photo['id'],
+                    photoInfo['photo']['originalsecret'], photoInfo['photo']['originalformat']
+                )
+                info('Downloading photo ID %s...' % photo['id'])
+                r = requests.get(originalURL, stream=True)
+                newPhotos += 1
+                with open(targetFile, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=1024):
+                        if chunk:
+                            f.write(chunk)
+                            f.flush()
+            else:
+                info('Photo ID %s does not pass Flickr safety threshold, and will be skipped' % photo['id'])
+        else:
+            info('Photo with ID %s exists locally and will be skipped' % photo['id'], 2)
+    if newPhotos > 0:
+        info('Total of %d new photos were downloaded into %s' % (newPhotos, DIR))
+    else:
+        info('All set! Looks like there are no new photos to download.')
+else:
+    error("Have not received photo information from Flickr. Does target account have any public photos?")
