@@ -8,6 +8,7 @@ import sys
 import argparse
 import requests
 
+
 def cli_options():
     """Parse selected options and generate help if needed."""
     parser = argparse.ArgumentParser(description='pull flickr photos by user ID or user name')
@@ -24,13 +25,15 @@ USER_ID = ARGS.userid
 USER_NAME = ARGS.name
 API_KEY = ARGS.apikey
 VERBOSITY = ARGS.verbose
-PHOTO_LIMIT = 500 # set a limit of images to pull
+PHOTO_LIMIT = 500  # set a limit of images to pull
 DIR = os.getenv('FLICKR_DOWNLOADS_DIR', os.environ['HOME']+'/Pictures/Flickr/')
+
 
 def info(message, verbosity=1):
     """Print message based on verbosity level."""
     if VERBOSITY >= verbosity:
         print message
+
 
 def error(message):
     """Print error message and terminate script."""
@@ -68,7 +71,7 @@ if int(photos['photos']['total']) > 0:
         if not os.path.isfile(targetFile):
             PHOTO_INFO_ENDPOINT = '%s?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&secret=%s&format=json&nojsoncallback=1' % (URL, API_KEY, photo['id'], photo['secret'])
             photoInfo = requests.get(PHOTO_INFO_ENDPOINT, verify=False).json()
-            if int(photoInfo['photo']['safety_level']) <= 1: # download only safe images according to Flickr rating
+            if int(photoInfo['photo']['safety_level']) <= 1:  # download only safe images according to Flickr rating
                 originalURL = "http://farm%d.staticflickr.com/%s/%s_%s_o.%s" % (
                     photo['farm'], photo['server'], photo['id'],
                     photoInfo['photo']['originalsecret'], photoInfo['photo']['originalformat']
