@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+_basic_help_completion(){
+    local cur opts base
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    opts="-h --help"
+    COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    return 0
+}
+
+complete -F _basic_help_completion ffind pfind
+
+_flickr_completion(){
+    local cur opts base
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    opts="--url --userid --name --apikey --help -v"
+    COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    return 0
+}
+
+complete -F _flickr_completion flickr 
+
+_git_convert_into_bare_completion(){
+    local cur opts base
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    opts="-h --help -m --mirror"
+    COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    return 0
+}
+
+complete -F _git_convert_into_bare_completion git-convert-into-bare
