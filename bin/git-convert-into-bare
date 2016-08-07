@@ -1,4 +1,4 @@
-#!/usr/bin/env awesome-bash
+#!/usr/bin/env awesome-bash --ref e3cf372be0b1
 
 awesome_shell_help <<_HELP_    
 Converts given git repository into a bare repository
@@ -14,7 +14,6 @@ Options:
 
 _HELP_
 
-#awesome-shell ref:e3cf372be0b1
 
 mirror=0
 target=""
@@ -77,8 +76,3 @@ if [ "$mirror" -eq 1 ];then
 fi;
 
 echo "Convertion is completed!";
-
-
-
-
-
