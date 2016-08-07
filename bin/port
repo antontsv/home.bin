@@ -1,0 +1,19 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_    
+
+Find out who is listening on the port
+
+Usage: $awesome_shell_script_name port
+
+_HELP_
+#awesome-shell ref:48a471681i02
+
+port="$1"
+
+[ -z "$1" ] && fatal "Port is required as a first argument"
+
+awesome_shell_include password
+keep_sudo_alive
+sudo lsof -P -n -i4TCP:"$port" | grep LISTEN
+
