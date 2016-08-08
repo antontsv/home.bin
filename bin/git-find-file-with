@@ -1,0 +1,14 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_    
+Searches files in git that contain spefified string
+
+Usage: $awesome_shell_script_name search string
+
+_HELP_
+#awesome-shell ref:68647f3
+
+[ -z "$*" ] && fatal "Search string was not specified"
+
+git grep "$*" | awk -F':' '{print $1}' | sort | uniq
+

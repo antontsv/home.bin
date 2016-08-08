@@ -10,6 +10,7 @@ _basic_help_completion(){
 }
 
 complete -F _basic_help_completion ffind pfind port
+complete -F _basic_help_completion git-find-file-with
 
 _flickr_completion(){
     local cur opts base
