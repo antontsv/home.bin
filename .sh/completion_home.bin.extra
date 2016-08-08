@@ -9,7 +9,7 @@ _basic_help_completion(){
     return 0
 }
 
-complete -F _basic_help_completion ffind pfind
+complete -F _basic_help_completion ffind pfind port
 
 _flickr_completion(){
     local cur opts base
