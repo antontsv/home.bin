@@ -1,4 +1,4 @@
-#!/usr/bin/env awesome-bash --ref 48a471681
+#!/usr/bin/env awesome-bash
 
 awesome_shell_help <<_HELP_    
 
@@ -7,6 +7,7 @@ Find out who is listening on the port
 Usage: $awesome_shell_script_name port_number
 
 _HELP_
+#awesome-shell ref:48a471681
 
 port="$1"
 

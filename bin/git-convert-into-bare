@@ -1,4 +1,4 @@
-#!/usr/bin/env awesome-bash --ref e3cf372be0b1
+#!/usr/bin/env awesome-bash
 
 awesome_shell_help <<_HELP_    
 Converts given git repository into a bare repository
@@ -13,7 +13,7 @@ Options:
     -m, --mirror   Set up as mirror if repo has origin
 
 _HELP_
-
+#awesome-shell ref:e3cf372be0b1
 
 mirror=0
 target=""
