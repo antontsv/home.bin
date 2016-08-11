@@ -15,4 +15,4 @@ port="$1"
 
 awesome_shell_include password
 keep_sudo_alive
-sudo lsof -P -n -i4TCP:"$port" | grep LISTEN
+sudo lsof -P -n -iTCP:"$port" | grep LISTEN
