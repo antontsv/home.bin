@@ -1,0 +1,18 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_    
+
+Launches your \$READER with a file specified
+
+Usage: $awesome_shell_script_name
+
+_HELP_
+#awesome-shell ref:a41195b
+
+reader=${READER:-less}
+
+if [ -z "$1" ] ; then
+  exec "$reader" .
+else
+  exec "$reader" "$1"
+fi
