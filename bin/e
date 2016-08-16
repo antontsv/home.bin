@@ -1,0 +1,18 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_    
+
+Launches your \$EDITOR with a file specified
+
+Usage: $awesome_shell_script_name
+
+_HELP_
+#awesome-shell ref:a41195b
+
+editor=${EDITOR:-vim}
+
+if [ -z "$1" ] ; then
+  exec "$editor" .
+else
+  exec "$editor" "$1"
+fi
