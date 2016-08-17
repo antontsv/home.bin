@@ -9,7 +9,7 @@ _basic_help_completion(){
     return 0
 }
 
-complete -F _basic_help_completion ffind pfind port
+complete -F _basic_help_completion ffind pfind port e v
 complete -F _basic_help_completion git-find-file-with
 
 _flickr_completion(){
