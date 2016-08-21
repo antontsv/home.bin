@@ -1,7 +1,7 @@
 #! /usr/bin/env python -B
 # -*- coding: utf-8 -*-
 
-"""Script to download Flickr user's public photos into local directory."""
+"""Script to download Flickr user public photos into local directory."""
 
 import os
 import sys
