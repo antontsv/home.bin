@@ -7,12 +7,14 @@ Launches your \$EDITOR with a file specified
 Usage: $awesome_shell_script_name
 
 _HELP_
-#awesome-shell ref:a41195b
+#awesome-shell ref:0be91b6
 
 editor=${EDITOR:-vim}
+
+required_utility "$editor"
 
 if [ -z "$1" ] ; then
   exec "$editor" .
 else
-  exec "$editor" "$1"
+  eval "$editor $*"
 fi

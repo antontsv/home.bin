@@ -7,12 +7,14 @@ Launches your \$READER with a file specified
 Usage: $awesome_shell_script_name
 
 _HELP_
-#awesome-shell ref:a41195b
+#awesome-shell ref:0be91b6
 
 reader=${READER:-less}
+
+required_utility "$reader"
 
 if [ -z "$1" ] ; then
   exec "$reader" .
 else
-  exec "$reader" "$1"
+  eval "$reader $*"
 fi
