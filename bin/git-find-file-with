@@ -10,5 +10,5 @@ _HELP_
 
 [ -z "$*" ] && fatal "Search string was not specified"
 
-git grep "$*" | awk -F':' '{print $1}' | sort | uniq
+git grep -l "$*"
 
