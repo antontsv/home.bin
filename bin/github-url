@@ -1,0 +1,43 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_    
+
+Create short github URLs with git.io
+
+Usage: $awesome_shell_script_name URL [code]
+
+code is a URL code/slug to be used under git.io
+
+This script was inspired by this:
+    https://gist.github.com/defunkt/1209316
+
+_HELP_
+#awesome-shell ref:79a7a4f
+
+awesome_shell_include system
+
+URL="$1"
+
+[[ "$URL" =~ https?://(.+\.)?(github|githubusercontent).com/.* ]]
+fatal_if_any_error "Wrong GitHub URL syntax: $URL"
+
+request_params="-F 'url=$URL'"
+
+if [ -n "$2" ];then
+    request_params+=" -F 'code=$2'"
+fi;
+
+response=$(eval "curl -L -f -i https://git.io $request_params 2> /dev/null")
+fatal_if_any_error "Git.io failed to get the URL: $response"
+result=$(echo "$response" | grep -o -E '^Location: (.+)$')
+fatal_if_any_error "No Location given by git.io: $response"
+
+if [ -n "$result" ];then
+   git_io_url=${result:10}
+   git_io_url=${git_io_url%%[[:space:]]}
+   if has_command pbcopy;then
+     silent_exec_with_title "Copy result $git_io_url to clipboard" "echo '$git_io_url' | pbcopy"
+   else
+     msg "Git.io URL: $git_io_url"
+   fi
+fi;
