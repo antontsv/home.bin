@@ -1,0 +1,22 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_
+Use curl to make get request and print headers only
+
+Usage: $awesome_shell_script_name URL
+
+Options:
+    -h, --help   this help
+
+_HELP_
+#awesome-shell ref:df54016
+
+msg_inline 'Sending cURL request...'
+out=$(curl -sv "$@" 2>&1 >/dev/null)
+verbose_exit_code
+
+header 'Request headers'
+echo "$out" | grep '^> ' | cut -c3-
+
+header 'Response headers'
+echo "$out" | grep '^< ' | cut -c3-
