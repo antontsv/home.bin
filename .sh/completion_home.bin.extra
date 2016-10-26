@@ -12,6 +12,7 @@ _basic_help_completion(){
 complete -F _basic_help_completion ffind pfind port
 complete -F _basic_help_completion git-find-file-with
 complete -F _basic_help_completion github-url curl-headers
+complete -F _basic_help_completion colors-tmux
 
 
 _help_and_filename_completion(){
@@ -37,7 +38,7 @@ _flickr_completion(){
     return 0
 }
 
-complete -F _flickr_completion flickr 
+complete -F _flickr_completion flickr
 
 _git_convert_into_bare_completion(){
     local cur opts base
