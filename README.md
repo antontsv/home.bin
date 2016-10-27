@@ -9,7 +9,7 @@ which requires [awesome-shell installation] (https://github.com/antontsv/awesome
 # Completion
 
 Completion rules can be found in `.sh` directory,
-if you use one-time [homeshick-based setup](https://git.io/all.files),
+if you use one-time [homeshick-based setup](https://github.com/antontsv/.files#comprehensive-setup),
 completion rules will be installed and kept up-to-date automatically
 
 Made with 💗  for your $HOME/bin
