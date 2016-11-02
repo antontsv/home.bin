@@ -18,7 +18,7 @@ awesome_shell_include system
 
 URL="$1"
 
-[[ "$URL" =~ https?://(.+\.)?(github|githubusercontent).com/.* ]]
+[[ "$URL" =~ https?://(.+\.)?(github.(io|com)|githubusercontent.com)/.* ]]
 fatal_if_any_error "Wrong GitHub URL syntax: $URL"
 
 request_params="-F 'url=$URL'"
