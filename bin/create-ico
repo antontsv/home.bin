@@ -1,0 +1,49 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_
+       Usage: $awesome_shell_script_name image.png
+
+       Create ico file for a web site:
+
+        <link rel="icon" href="/path/to/favicon.ico" type="image/x-icon">
+        <link rel="shortcut" href="/path/to/favicon.ico" type="image/x-icon">
+
+      More info here: http://www.imagemagick.org/Usage/thumbnails/#favicon
+_HELP_
+#awesome-shell ref:403763b
+
+required_utility convert
+required_utility identify
+
+file="$1"
+
+if [ ! -r "$file" ];then
+    fatal "Cannot read information from file: $file"
+fi;
+
+awesome_shell_include dir
+file=$(abs_path "$file")
+
+image_info=$(identify "$file")
+fatal_if_any_error "Cannot identify source image file. Check if you provided an image file"
+
+temp_dim=$(cut -d' ' -f 3 <<< "$image_info")
+width=$(cut -d'x' -f 1 <<< "$temp_dim")
+height=$(cut -d'x' -f 2 <<< "$temp_dim")
+
+if [ -z "$width" ] || [ "$width" -lt 256 ];then
+    fatal "Source image is expected to be at least 256px wide"
+fi;
+
+if [ "$width" -ne "$height" ];then
+    fatal "Source image should be square"
+fi;
+
+msg "Processing image with alpha:on and background:transparent"
+silent_exec_with_title "Convert and create ico file" "convert -background transparent $file -alpha on -resize 256x256 \
+           -define icon:auto-resize="256,128,96,64,48,32,16" \
+                     $file.ico"
+
+if [ $? -eq 0 ];then
+ msg "Output file: $file.ico"
+fi;

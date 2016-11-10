@@ -28,6 +28,8 @@ _help_and_filename_completion(){
 }
 
 complete -F _help_and_filename_completion e v
+complete -F _help_and_filename_completion create-ico
+
 
 _flickr_completion(){
     local cur opts base
