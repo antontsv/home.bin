@@ -1,0 +1,30 @@
+#!/usr/bin/env awesome-bash
+
+awesome_shell_help <<_HELP_
+       Usage: $awesome_shell_script_name
+
+       Populates unwanted hosts from:
+       https://github.com/StevenBlack/hosts
+
+_HELP_
+#awesome-shell ref:403763b
+
+file='/etc/hosts'
+
+if [ ! -r "$file" ];then
+    fatal "Cannot read information from file: $file"
+fi;
+
+required_utility mktemp
+
+updates_file=$(mktemp 2>/dev/null || mktemp -t hosts)
+[ -w "$updates_file" ] || fatal "Cannot create temp file for hosts updates"
+
+silent_exec_with_title "Getting hosts updates from StevenBlack/hosts" "curl -f https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -o $updates_file"
+fatal_if_any_error
+
+entry_count=$(grep '^0.0.0.0' "$updates_file" | wc -l)
+msg "File contains $entry_count entries"
+
+rm "$updates_file"
+
