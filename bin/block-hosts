@@ -26,5 +26,35 @@ fatal_if_any_error
 entry_count=$(grep '^0.0.0.0' "$updates_file" | wc -l)
 msg "File contains $entry_count entries"
 
+marker='# https://github.com/StevenBlack/hosts'
+marker_start="$marker <start>"
+marker_end="$marker <end>"
+start_line=$(grep -n "$marker_start" "$file" | head -1 | cut -f1 -d:)
+end_line=$(grep -n "$marker_end" "$file" | head -1 | cut -f1 -d:)
+
+awesome_shell_include password
+keep_sudo_alive
+
+if [ -n "$start_line" ] && [ -n "$end_line" ];then
+    msg 'Previous markers have been found. Will need to clean up.'
+    bak_file="${updates_file}.bak"
+    sed -e "${start_line},${end_line}d;" "$file" > "$bak_file"
+    fatal_if_any_error "Cannot create temp backup file"
+    sudo mv "$bak_file" "$file"
+    fatal_if_any_error "Cannot produce cleaned up file $file"
+    msg "Number of lines in $file after cleanup $(wc -l $file)"
+fi;
+
+start_line=$(grep -n "$marker_start" "$file" | head -1 | cut -f1 -d:)
+end_line=$(grep -n "$marker_end" "$file" | head -1 | cut -f1 -d:)
+[ -z "$start_line" ] && [ -z "$end_line" ]
+fatal_if_any_error "StevenBlack/hosts markers should not be present in $file"
+
+echo -e "$marker_start" | sudo tee -a "$file" 1>/dev/null 2>/dev/null
+grep '^0.0.0.0' "$updates_file" | sudo tee -a "$file" 1>/dev/null 2>/dev/null
+echo -e "$marker_end" | sudo tee -a "$file" 1>/dev/null 2>/dev/null
+
+msg "Final number of lines in $file $(wc -l $file)"
+
 rm "$updates_file"
 
