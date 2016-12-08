@@ -12,7 +12,7 @@ _basic_help_completion(){
 complete -F _basic_help_completion ffind pfind port
 complete -F _basic_help_completion git-find-file-with
 complete -F _basic_help_completion github-url curl-headers
-complete -F _basic_help_completion colors-tmux
+complete -F _basic_help_completion colors-tmux block-hosts
 
 
 _help_and_filename_completion(){

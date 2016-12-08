@@ -1,11 +1,12 @@
 #!/usr/bin/env awesome-bash
 
 awesome_shell_help <<_HELP_
-       Usage: $awesome_shell_script_name
+Usage: $awesome_shell_script_name
 
-       Populates unwanted hosts from:
-       https://github.com/StevenBlack/hosts
+  Blocks some unwanted sites from:
+  https://github.com/StevenBlack/hosts
 
+  Entries are written to /etc/hosts
 _HELP_
 #awesome-shell ref:403763b
 
