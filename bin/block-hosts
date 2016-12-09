@@ -24,7 +24,7 @@ updates_file=$(mktemp 2>/dev/null || mktemp -t hosts)
 silent_exec_with_title "Getting hosts updates from StevenBlack/hosts" "curl -f https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -o $updates_file"
 fatal_if_any_error
 
-entry_count=$(grep '^0.0.0.0' "$updates_file" | wc -l)
+entry_count=$(grep -c '^0.0.0.0' "$updates_file")
 msg "File contains $entry_count entries"
 
 marker='# https://github.com/StevenBlack/hosts'
