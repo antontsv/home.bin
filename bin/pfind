@@ -11,7 +11,7 @@ Options:
     -h, --help          this help
 
 _HELP_
- 
+
 if [ -z "$1" ] || [[ "$@" == *"-h"* ]];then
    echo "$HELP_MESSAGE";
    exit 1;

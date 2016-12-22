@@ -1,6 +1,6 @@
 #!/usr/bin/env awesome-bash
 
-awesome_shell_help <<_HELP_    
+awesome_shell_help <<_HELP_
 
 Find out who is listening on the port
 

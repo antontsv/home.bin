@@ -1,6 +1,6 @@
 #!/usr/bin/env awesome-bash
 
-awesome_shell_help <<_HELP_    
+awesome_shell_help <<_HELP_
 
 Create short github URLs with git.io
 

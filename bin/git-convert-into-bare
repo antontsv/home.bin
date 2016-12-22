@@ -1,6 +1,6 @@
 #!/usr/bin/env awesome-bash
 
-awesome_shell_help <<_HELP_    
+awesome_shell_help <<_HELP_
 Converts given git repository into a bare repository
 
 Usage: $awesome_shell_script_name [-m|--mirror] [repository_path]
