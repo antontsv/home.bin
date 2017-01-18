@@ -22,10 +22,10 @@ do
         -d|--delete)
         delete=1
         ;;
-		-h|--help)
-		echo "$HELP_MESSAGE";
+        -h|--help)
+        echo "$HELP_MESSAGE";
         exit 0;
-		;;
+        ;;
         *)
         ;;
     esac
