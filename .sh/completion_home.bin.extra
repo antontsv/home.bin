@@ -52,3 +52,15 @@ _git_convert_into_bare_completion(){
 }
 
 complete -F _git_convert_into_bare_completion git-convert-into-bare
+
+
+_ssh_agent_ctrl_completion(){
+    local cur opts base
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    opts="-h --help -d --delete"
+    COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    return 0
+}
+
+complete -F _ssh_agent_ctrl_completion ssh-agent-ctrl

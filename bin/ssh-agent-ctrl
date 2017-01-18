@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+CURRENT_SCRIPT=$(basename "$0")
+read -r -d '' HELP_MESSAGE <<_HELP_
+Usage: $CURRENT_SCRIPT [-d]
+
+Helper script to manipulate SSH agent
+
+Options:
+    -h, --help          this help
+    -d, --delete        delete all SSh keys from agent
+
+_HELP_
+
+delete=0
+while [[ $# -gt 0 ]]
+do
+    opt="$1"
+    shift
+
+    case $opt in
+        -d|--delete)
+        delete=1
+        ;;
+		-h|--help)
+		echo "$HELP_MESSAGE";
+        exit 0;
+		;;
+        *)
+        ;;
+    esac
+done;
+
+launch_ssh_agent=1
+ssh_agent_pid_file="$TMPDIR/ssh-agent-for-$(whoami).pid"
+ssh_agent_socket="$TMPDIR/ssh-agent-socket-for-$(whoami)"
+if [ -f "$ssh_agent_pid_file" ];then
+    ssh_agent_pid=$(cat "$ssh_agent_pid_file")
+    kill -0 "$ssh_agent_pid"
+    if [ $? -eq 0 ];then
+        SSH_AGENT_PID="$ssh_agent_pid";
+        export SSH_AGENT_PID;
+        SSH_AUTH_SOCK="$ssh_agent_socket";
+        export SSH_AUTH_SOCK;
+        launch_ssh_agent=0;
+    fi;
+fi;
+
+if [ "$launch_ssh_agent" -eq 1 ];then
+    eval $(ssh-agent -t 3600 -a "$ssh_agent_socket") > /dev/null
+    [ -n "$SSH_AGENT_PID" ] && echo "$SSH_AGENT_PID" > "$ssh_agent_pid_file"
+fi;
+
+[ $delete -eq 1 ] && ssh-add -D
