@@ -13,3 +13,4 @@ silent_exec_with_title "Installing go-wrk (benchmarking)" go get github.com/tsli
 silent_exec_with_title "Installing go-tourch (pprof w/flame graphs)" go get github.com/uber/go-torch
 silent_exec_with_title "Installing goimports" go get golang.org/x/tools/cmd/goimports
 silent_exec_with_title "Installing go lint" go get -u github.com/golang/lint/golint
+silent_exec_with_title "Installing gocode" go get -u github.com/nsf/gocode
