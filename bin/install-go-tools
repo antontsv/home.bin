@@ -18,5 +18,8 @@ silent_exec_with_title "Installing errcheck" go get -u github.com/kisielk/errche
 silent_exec_with_title "Installing dogef" go get github.com/rogpeppe/godef
 silent_exec_with_title "Installing gotest" go get github.com/cweill/gotests
 silent_exec_with_title "Installing gopkgs" go get github.com/tpng/gopkgs
+silent_exec_with_title "Installing go-symbols" go get github.com/newhook/go-symbols
+silent_exec_with_title "Installing guru" go get golang.org/x/tools/cmd/guru
+silent_exec_with_title "Installing gorename" go get golang.org/x/tools/cmd/gorename
 silent_exec_with_title "Installing go-outline" go get github.com/lukehoban/go-outline
 silent_exec_with_title "Installing goreturns" go get -u sourcegraph.com/sqs/goreturns
