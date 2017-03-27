@@ -1,2 +1,11 @@
 bin/colors-tmux linguist-language=bash
-create-icon linguist-language=bash
+bin/create-icon linguist-language=bash
+bin/block-hosts linguist-language=bash
+bin/curl-headers linguist-language=bash
+bin/e linguist-language=bash
+bin/git-convert-into-bare linguist-language=bash
+bin/git-find-file-with linguist-language=bash
+bin/github-url linguist-language=bash
+bin/install-go-tools linguist-language=bash
+bin/portcheck linguist-language=bash
+bin/v linguist-language=bash
