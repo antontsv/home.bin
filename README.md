@@ -1,15 +1,19 @@
 # Scripts and executable files
 
-You can copy desired script to any location in your PATH
-or install to ~/bin with [homeshick](https://github.com/antontsv/homeshick)
+There scripts are intented to be used on Unix-like OS such as Linux or Mac.
 
-Some of the scripts are using `#!/usr/bin/env awesome-bash` shebang,
-which requires [awesome-shell installation] (https://github.com/antontsv/awesome-shell#installation)
+# Install
+* You can copy scripts to any location in your PATH.
 
-# Completion
+ OR 
 
-Completion rules can be found in `.sh` directory,
-if you use one-time [homeshick-based setup](https://github.com/antontsv/.files#comprehensive-setup),
-completion rules will be installed and kept up-to-date automatically
+* you can go for complete dot files and scripts setup using [this one-liner](https://github.com/antontsv/.files#comprehensive-setup). It includes dotfiles manager, completion rules, awesome-bash, etc.
+
+# Notable scripts
+
+* [flickr](https://github.com/antontsv/home.bin/blob/master/bin/flickr) can download pictures from photo-sharing website. Put it as a cron job and you can run screensaver off the flickr photostream.
+
+* [block-hosts](https://github.com/antontsv/home.bin/blob/master/bin/block-hosts) want to block ad trackers, malware and suspicious websites on DNS level. Way better than AD blocker :)
+
 
 Made with 💗  for your $HOME/bin
