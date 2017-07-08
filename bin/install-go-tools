@@ -24,3 +24,4 @@ silent_exec_with_title "Installing guru" go get golang.org/x/tools/cmd/guru
 silent_exec_with_title "Installing gorename" go get golang.org/x/tools/cmd/gorename
 silent_exec_with_title "Installing go-outline" go get github.com/lukehoban/go-outline
 silent_exec_with_title "Installing goreturns" go get -u sourcegraph.com/sqs/goreturns
+silent_exec_with_title "Installing goconvey" go get github.com/smartystreets/goconvey
