@@ -25,3 +25,4 @@ silent_exec_with_title "Installing gorename" go get golang.org/x/tools/cmd/goren
 silent_exec_with_title "Installing go-outline" go get github.com/lukehoban/go-outline
 silent_exec_with_title "Installing goreturns" go get -u sourcegraph.com/sqs/goreturns
 silent_exec_with_title "Installing goconvey" go get github.com/smartystreets/goconvey
+silent_exec_with_title "Installing misspell" go get -u github.com/client9/misspell/cmd/misspell
