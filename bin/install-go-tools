@@ -27,3 +27,4 @@ silent_exec_with_title "Installing goreturns" go get -u sourcegraph.com/sqs/gore
 silent_exec_with_title "Installing goconvey" go get github.com/smartystreets/goconvey
 silent_exec_with_title "Installing misspell" go get -u github.com/client9/misspell/cmd/misspell
 silent_exec_with_title "Installing fresh" go get -u github.com/pilu/fresh
+silent_exec_with_title "Installing gomodifytags" go get -u github.com/fatih/gomodifytags
