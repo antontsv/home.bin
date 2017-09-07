@@ -1,0 +1,34 @@
+#!/usr/bin/env awesome-bash
+# vim: ft=sh:
+
+awesome_shell_help <<_HELP_
+Manipulate PDF using apache PDFBox
+
+Usage: $awesome_shell_script_name <command> args
+Details: https://pdfbox.apache.org/2.0/commandline.html
+
+Options:
+    -h, --help   this help
+
+_HELP_
+#awesome-shell ref:d168926
+
+awesome_shell_include system
+required_utility java
+required_utility shasum
+required_utility curl
+
+pdfboxVersion="2.0.7"
+pdfboxName="pdfbox-app-$pdfboxVersion.jar"
+pdfboxSha256="8e2358afe8a073745e555b88a12a58c6549044107644335e58d874b572c44b29"
+pdfboxJar="$awesome_shell_script_dir/$pdfboxName"
+pdfboxURL="http://mirrors.gigenet.com/apache/pdfbox/$pdfboxVersion/$pdfboxName"
+
+if [ ! -f "$pdfboxJar" ];then
+    silent_exec_with_title "Downloading $pdfboxName" "curl -qf -o '$pdfboxJar' '$pdfboxURL'"
+    fatal_if_any_error
+    sum=$(shasum -a 256 "$pdfboxJar" | cut -d' ' -f1)
+    [[ "$sum" == "$pdfboxSha256" ]] || fatal "Checksum for $pdfboxName does not match. Cannot run"
+fi;
+
+java -jar "$pdfboxJar" ${awesome_shell_arguments[@]}
