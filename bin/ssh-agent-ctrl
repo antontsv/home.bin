@@ -36,13 +36,15 @@ ssh_agent_pid_file="$TMPDIR/ssh-agent-for-$(whoami).pid"
 ssh_agent_socket="$TMPDIR/ssh-agent-socket-for-$(whoami)"
 if [ -f "$ssh_agent_pid_file" ];then
     ssh_agent_pid=$(cat "$ssh_agent_pid_file")
-    kill -0 "$ssh_agent_pid"
+    kill -0 "$ssh_agent_pid" 2>/dev/null
     if [ $? -eq 0 ];then
         SSH_AGENT_PID="$ssh_agent_pid";
         export SSH_AGENT_PID;
         SSH_AUTH_SOCK="$ssh_agent_socket";
         export SSH_AUTH_SOCK;
         launch_ssh_agent=0;
+    else
+        rm -f "$ssh_agent_pid_file" "$ssh_agent_socket"
     fi;
 fi;
 
