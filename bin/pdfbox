@@ -11,7 +11,7 @@ Options:
     -h, --help   this help
 
 _HELP_
-#awesome-shell ref:d168926
+#awesome-shell ref:3844c65
 
 awesome_shell_include system
 required_utility java
@@ -21,7 +21,8 @@ required_utility curl
 pdfboxVersion="2.0.7"
 pdfboxName="pdfbox-app-$pdfboxVersion.jar"
 pdfboxSha256="8e2358afe8a073745e555b88a12a58c6549044107644335e58d874b572c44b29"
-pdfboxJar="$awesome_shell_script_dir/$pdfboxName"
+downloadDir=$(get_existing_tmp_dir)
+pdfboxJar="$downloadDir/$pdfboxName"
 pdfboxURL="http://mirrors.gigenet.com/apache/pdfbox/$pdfboxVersion/$pdfboxName"
 
 if [ ! -f "$pdfboxJar" ];then
