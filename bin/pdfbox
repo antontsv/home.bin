@@ -25,10 +25,15 @@ pdfboxJar="$awesome_shell_script_dir/$pdfboxName"
 pdfboxURL="http://mirrors.gigenet.com/apache/pdfbox/$pdfboxVersion/$pdfboxName"
 
 if [ ! -f "$pdfboxJar" ];then
-    silent_exec_with_title "Downloading $pdfboxName" "curl -qf -o '$pdfboxJar' '$pdfboxURL'"
+    downloadFile="$pdfboxJar.down"
+    silent_exec_with_title "Downloading $pdfboxName" "curl -qf -o '$downloadFile' '$pdfboxURL'"
     fatal_if_any_error
-    sum=$(shasum -a 256 "$pdfboxJar" | cut -d' ' -f1)
-    [[ "$sum" == "$pdfboxSha256" ]] || fatal "Checksum for $pdfboxName does not match. Cannot run"
+    sum=$(shasum -a 256 "$downloadFile" | cut -d' ' -f1)
+    if [[ "$sum" != "$pdfboxSha256" ]];then
+        rm -f "$downloadFile"
+        fatal "Checksum for $pdfboxName does not match. Cannot run"
+    fi;
+    mv "$downloadFile" "$pdfboxJar"
 fi;
 
 java -jar "$pdfboxJar" ${awesome_shell_arguments[@]}
