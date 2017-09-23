@@ -1,0 +1,31 @@
+#!/usr/bin/env awesome-bash
+# vim: ft=sh:
+
+awesome_shell_help <<_HELP_
+Usage: $awesome_shell_script_name [-h|--help] [dark|light]
+
+ Script prints currently selected mode,
+ or sets one of 'dark', 'light' if specified as parameter
+
+_HELP_
+
+#awesome-shell ref:e9301cc
+
+awesome_shell_include messages
+
+color_file="$HOME/.misc/current_color_variant"
+
+if [ -n "$1" ];then
+    dir=$(dirname "$color_file")
+    mkdir -p "$dir"
+    fatal_if_any_error "Cannot create dir for preference file: $dir"
+    echo -n "$1" > "$color_file"
+    fatal_if_any_error "Cannot write to preference file: $color_file"
+    echo "New color variant is set to: $1"
+    exit 0
+fi;
+if [ -f "$color_file" ]; then
+    cat "$color_file";
+elif [ -n "$TERM_COLOR_VARIANT" ];then
+    echo -n "$TERM_COLOR_VARIANT";
+fi;

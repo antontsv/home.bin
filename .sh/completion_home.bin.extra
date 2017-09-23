@@ -64,3 +64,15 @@ _ssh_agent_ctrl_completion(){
 }
 
 complete -F _ssh_agent_ctrl_completion ssh-agent-ctrl
+
+_color_mode_for_term_completion(){
+    local cur opts base
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    opts="-h --help dark light"
+    COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    return 0
+}
+
+complete -F _color_mode_for_term_completion color-mode-for-term
+
