@@ -1,0 +1,22 @@
+#!/usr/bin/env awesome-bash
+# vim: ft=sh:
+
+awesome_shell_help <<_HELP_
+Usage: $awesome_shell_script_name script_name [-h|--help]
+
+Allows to view the code of a shell script in your PATH.
+Use it to take a peek at shell scripts or any interpreted scripts.
+Note it won't help with binary files.
+
+_HELP_
+
+#awesome-shell ref:e9301cc
+
+awesome_shell_include messages
+
+[ -n "$1" ] || fatal "Shell script name is required as a fist paramater"
+
+cmd=$(command -v "$1")
+fatal_if_any_error "Unable to find $1 in your PATH"
+
+less "$cmd"

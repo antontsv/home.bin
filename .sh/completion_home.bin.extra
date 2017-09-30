@@ -76,3 +76,17 @@ _color_mode_for_term_completion(){
 
 complete -F _color_mode_for_term_completion color-mode-for-term
 
+_vscript_completion(){
+    local cur opts base
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    if [ $COMP_CWORD -eq 1 ] && [ "${cur:0:1}" = "-" ]; then
+        opts="-h --help"
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    else
+        COMPREPLY=($(compgen -W "$opts" -c "$cur"))
+    fi;
+    return 0
+}
+
+complete -F _vscript_completion vscript
+
