@@ -1,0 +1,29 @@
+#!/usr/bin/env awesome-bash
+# vim: ft=sh:
+
+awesome_shell_help <<_HELP_
+Usage: $awesome_shell_script_name [-h|--help]
+
+    Lists crontabs for all users
+_HELP_
+
+#awesome-shell ref:e9301cc
+
+awesome_shell_include messages
+awesome_shell_include password
+
+keep_sudo_alive
+
+userlist_file="/etc/passwd"
+[ -r "$userlist_file" ] || fatal "cannot get list of users from $userlist_file"
+
+users=$(cut -f1 -d: $userlist_file | grep -v "#" | sort)
+[ "$(uname -s)" = "Darwin" ] && users=$(dscl . list /Users | sort)
+
+for user in $users; do
+ if crons=$(sudo crontab -u "$user" -l 2>/dev/null); then
+    header "Crontab for $user"
+    msg "$crons"
+ fi;
+done
+
