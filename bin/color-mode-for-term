@@ -16,12 +16,17 @@ awesome_shell_include messages
 color_file="$HOME/.misc/current_color_variant"
 
 if [ -n "$1" ];then
+    mode="$1"
     dir=$(dirname "$color_file")
     mkdir -p "$dir"
     fatal_if_any_error "Cannot create dir for preference file: $dir"
-    echo -n "$1" > "$color_file"
+    echo -n "$mode" > "$color_file"
     fatal_if_any_error "Cannot write to preference file: $color_file"
-    echo "New color variant is set to: $1"
+    if [ "$(type -t set_terminal_profile)" == 'function' ]; then
+        [ "$mode" == 'dark' ] && set_terminal_profile 'Solarized Dark'
+        [ "$mode" == 'light' ] && set_terminal_profile 'Solarized Light'
+    fi;
+    echo "New color variant is set to: $mode"
     exit 0
 fi;
 if [ -f "$color_file" ]; then
