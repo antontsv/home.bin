@@ -2,12 +2,15 @@
 # vim: ft=sh:
 
 awesome_shell_help <<_HELP_
-Usage: $awesome_shell_script_name
+Usage: $awesome_shell_script_name [-r]
 
   Blocks some unwanted sites from:
   https://github.com/StevenBlack/hosts
 
   Entries are written to /etc/hosts
+
+  options:
+  -r, --remove   Remove previosly written entries
 _HELP_
 #awesome-shell ref:403763b
 
@@ -19,6 +22,18 @@ fi;
 
 required_utility mktemp
 
+remove=0
+while [[ $# -gt 0 ]]
+do
+    opt="$1"
+    shift
+
+    case $opt in
+        -r|--remove)
+        remove=1
+        ;;
+    esac
+done;
 updates_file=$(mktemp 2>/dev/null || mktemp -t hosts)
 [ -w "$updates_file" ] || fatal "Cannot create temp file for hosts updates"
 
@@ -46,6 +61,8 @@ if [ -n "$start_line" ] && [ -n "$end_line" ];then
     fatal_if_any_error "Cannot produce cleaned up file $file"
     msg "Number of lines in $file after cleanup $(wc -l $file)"
 fi;
+
+[ $remove -eq 1 ] && exit 0
 
 start_line=$(grep -n "$marker_start" "$file" | head -1 | cut -f1 -d:)
 end_line=$(grep -n "$marker_end" "$file" | head -1 | cut -f1 -d:)
