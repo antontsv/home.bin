@@ -1,0 +1,32 @@
+#!/usr/bin/env awesome-bash
+# vim: ft=sh:
+
+awesome_shell_help <<_HELP_
+Usage: $awesome_shell_script_name [-h|--help]
+
+Verifies commit signatures for all homeshick repos
+_HELP_
+
+#awesome-shell ref:e9301cc
+
+awesome_shell_include messages
+required_utility verify-commit
+
+homeshick_root="$HOME/.homesick"
+homeshick_repos="$homeshick_root/repos"
+homeshick_keys="$homeshick_root/trusted_keys.asc"
+
+[ -d "$homeshick_repos" ] || fatal "No $homeshick_repos directory found. Did you install homeshick?"
+[ -r "$homeshick_keys" ] || fatal "No $homeshick_keys file found. Install through https://git.io/all.files"
+
+msg_min_len $(( ${#homeshick_repos} + 40 ))
+had_failure=0
+
+while IFS= read -r -d '' repo_path; do
+    msg_inline "Checking signature on $repo_path..."
+    verify-commit sigcheck -k "$homeshick_keys" -p "$repo_path" 1>/dev/null 2>/dev/null
+    verbose_exit_code || had_failure=1
+done < <(find "$homeshick_repos" -mindepth 1 -maxdepth 1 -type d -print0)
+
+exit $had_failure
+
