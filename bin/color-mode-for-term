@@ -22,9 +22,9 @@ if [ -n "$1" ];then
     fatal_if_any_error "Cannot create dir for preference file: $dir"
     echo -n "$mode" > "$color_file"
     fatal_if_any_error "Cannot write to preference file: $color_file"
-    if [ "$(type -t set_terminal_profile)" == 'function' ]; then
-        [ "$mode" == 'dark' ] && set_terminal_profile 'Solarized Dark'
-        [ "$mode" == 'light' ] && set_terminal_profile 'Solarized Light'
+    if has_command 'set-macos-terminal-profile'; then
+        [ "$mode" == 'dark' ] && set-macos-terminal-profile 'Solarized Dark'
+        [ "$mode" == 'light' ] && set-macos-terminal-profile 'Solarized Light'
     fi;
     echo "New color variant is set to: $mode"
     exit 0
