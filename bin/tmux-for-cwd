@@ -1,0 +1,55 @@
+#!/usr/bin/env awesome-bash
+# vim: ft=sh:
+
+awesome_shell_help <<_HELP_
+Usage: $awesome_shell_script_name [-h|--help] [-k|--kill]
+
+    Open new or pre-existing tmux session for current working directory
+
+    -k will kill all previously opened sessions
+_HELP_
+
+#awesome-shell ref:4e2b0cf
+
+awesome_shell_include messages
+
+recordFile="/tmp/${awesome_shell_script_name}-cache"
+touch "$recordFile"
+
+while [[ $# -gt 0 ]]
+do
+    opt="$1"
+    shift
+
+    case $opt in
+        -k|--kill)
+        silent_exec_with_title "Removing cache file" rm "$recordFile"
+        tmux list-sessions | grep '📂' | cut -d':' -f1 | xargs -n 1 tmux kill-session -t
+        verbose_exit_code "Cleaning up created sessions"
+        fatal_if_any_error "Cannot kill tmux sessions"
+        exit 0
+        ;;
+    esac
+done;
+
+cwd=$(pwd)
+# last subdirectory name
+last_entry=${cwd##*/}
+
+record=$(grep -E "^$cwd;" "$recordFile" | cut -d';' -f2)
+
+if [ -z "$record" ];then
+    i=1
+    suffix=""
+    while grep -F -q ";$last_entry$suffix;" "$recordFile";do
+        i=$((i+1))
+        suffix="[$i]" # if there is a conflict add suffix
+    done;
+
+    echo "$cwd;$last_entry$suffix;" >> "$recordFile"
+    record="$last_entry$suffix"
+
+fi
+
+session="📂$record"
+tmux attach-session -d -t "$session" 2>/dev/null || tmux new-session -s "$session"
