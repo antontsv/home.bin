@@ -22,14 +22,12 @@ _help_and_filename_completion(){
     if [ $COMP_CWORD -eq 1 ] && [ "${cur:0:1}" = "-" ]; then
         opts="$opts -h --help"
         COMPREPLY=($(compgen -W "$opts" -- "$cur"))
-    elif [ "x$(type -t _filedir_xspec)" = "xfunction" ];then
-        _filedir_xspec
     fi;
     return 0
 }
 
-complete -F _help_and_filename_completion e v
-complete -F _help_and_filename_completion create-ico
+complete -o filenames -A file -F _help_and_filename_completion e v
+complete -o filenames -A file -F _help_and_filename_completion create-ico
 
 
 _flickr_completion(){
