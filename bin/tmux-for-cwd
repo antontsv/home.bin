@@ -35,6 +35,8 @@ done;
 cwd=$(pwd)
 # last subdirectory name
 last_entry=${cwd##*/}
+last_entry=${last_entry//:/_} # no colons in tmux session names
+last_entry=${last_entry//./_} # no dots in tmux session names
 
 record=$(grep -E "^$cwd;" "$recordFile" | cut -d';' -f2)
 
