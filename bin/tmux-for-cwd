@@ -2,7 +2,7 @@
 # vim: ft=sh:
 
 awesome_shell_help <<_HELP_
-Usage: $awesome_shell_script_name [-h|--help] [-k|--kill]
+Usage: $awesome_shell_script_name [-h|--help] [-k|--kill] [--list]
 
     Open new or pre-existing tmux session for current working directory
 
@@ -27,6 +27,10 @@ do
         tmux list-sessions | grep '📂' | cut -d':' -f1 | xargs -n 1 tmux kill-session -t
         verbose_exit_code "Cleaning up created sessions"
         fatal_if_any_error "Cannot kill tmux sessions"
+        exit 0
+        ;;
+        --list)
+        tmux list-sessions | grep '📂' | cut -d':' -f1 | cut -d'📂' -f2
         exit 0
         ;;
     esac
