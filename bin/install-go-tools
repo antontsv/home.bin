@@ -9,11 +9,12 @@ Installs useful go tools
 _HELP_
 #awesome-shell ref:6764e68
 
+saved_GO111MODULE="$GO111MODULE"
+export GO111MODULE=off
 header "Installing custom tools for Go lang"
 silent_exec_with_title "Installing go-wrk (benchmarking)" go get github.com/tsliwowicz/go-wrk
 silent_exec_with_title "Installing go-tourch (pprof w/flame graphs)" go get github.com/uber/go-torch
 silent_exec_with_title "Installing goimports" go get golang.org/x/tools/cmd/goimports
-silent_exec_with_title "Installing go lint" go get -u github.com/golang/lint/golint
 silent_exec_with_title "Installing gocode" go get -u github.com/nsf/gocode
 silent_exec_with_title "Installing errcheck" go get -u github.com/kisielk/errcheck
 silent_exec_with_title "Installing dogef" go get github.com/rogpeppe/godef
@@ -28,4 +29,5 @@ silent_exec_with_title "Installing goconvey" go get github.com/smartystreets/goc
 silent_exec_with_title "Installing misspell" go get -u github.com/client9/misspell/cmd/misspell
 silent_exec_with_title "Installing fresh" go get -u github.com/pilu/fresh
 silent_exec_with_title "Installing gomodifytags" go get -u github.com/fatih/gomodifytags
-silent_exec_with_title "Installing dlv (delve)" go get -u github.com/derekparker/delve/cmd/dlv
+silent_exec_with_title "Installing dlv (delve)" go get -u github.com/go-delve/delve/cmd/dlv
+export GO111MODULE="$saved_GO111MODULE"
